@@ -1,6 +1,14 @@
 import db from '../../../lib/db';
-import fs from 'fs/promises';
-import path from 'path';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+
+
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+});
 
 export async function POST(request) {
     try {
@@ -13,17 +21,32 @@ export async function POST(request) {
         const email_id = formData.get('email_id');
         const imageFile = formData.get('image');
 
-        // Save the image file to the server
-        const imagePath = `/schoolImages/${imageFile.name}`;
-        const filePath = path.join(process.cwd(), 'public', imagePath);
-        const fileBuffer = await imageFile.arrayBuffer();
+        // Check the image size (less than 10MB)
+        if (imageFile.size > 5 * 1024 * 1024) {
+            return new Response('Image size exceeds 5MB limit', { status: 400 });
+        }
 
-        await fs.writeFile(filePath, Buffer.from(fileBuffer));
+        // Convert the image file to a buffer
+        const fileBuffer = Buffer.from(await imageFile.arrayBuffer());
+
+        // Upload the image to S3
+        const s3Params = {
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Key: `schoolImages/${imageFile.name}`,
+            Body: fileBuffer,
+            ContentType: imageFile.type,
+        };
+
+        const command = new PutObjectCommand(s3Params);
+        await s3.send(command);
+
+        // Construct the image URL
+        const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/schoolImages/${imageFile.name}`;
 
         // Insert the school data into the database
         await db.query(
             'INSERT INTO schools (name, address, city, state, contact, image, email_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [name, address, city, state, contact, imagePath, email_id]
+            [name, address, city, state, contact, imageUrl, email_id]
         );
 
         return new Response('School added successfully!', { status: 200 });
