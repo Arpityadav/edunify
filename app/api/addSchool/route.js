@@ -3,10 +3,10 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 
 const s3 = new S3Client({
-    region: process.env.AWS_REGION,
+    region: process.env.NETLIFY_AWS_REGION,
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.NETLIFY_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.NETLIFY_AWS_SECRET_ACCESS_KEY,
     },
 });
 
@@ -31,7 +31,7 @@ export async function POST(request) {
 
         // Upload the image to S3
         const s3Params = {
-            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Bucket: process.env.NETLIFY_AWS_S3_BUCKET_NAME,
             Key: `schoolImages/${imageFile.name}`,
             Body: fileBuffer,
             ContentType: imageFile.type,
@@ -41,7 +41,7 @@ export async function POST(request) {
         await s3.send(command);
 
         // Construct the image URL
-        const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/schoolImages/${imageFile.name}`;
+        const imageUrl = `https://${process.env.NETLIFY_AWS_S3_BUCKET_NAME}.s3.${process.env.NETLIFY_AWS_REGION}.amazonaws.com/schoolImages/${imageFile.name}`;
 
         // Insert the school data into the database
         await db.query(

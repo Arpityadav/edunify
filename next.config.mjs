@@ -18,11 +18,10 @@ const nextConfig = {
         MYSQL_PORT: process.env.MYSQL_PORT && process.env.MYSQL_PORT.replace(/,$/g, ''),
         MYSQL_PASSWORD: process.env.MYSQL_PASSWORD && process.env.MYSQL_PASSWORD.replace(/,$/g, ''),
         MYSQL_DATABASE: process.env.MYSQL_DATABASE && process.env.MYSQL_DATABASE.replace(/,$/g, ''),
-        URL: process.env.URL && process.env.URL.replace(/,$/g, ''),
-        AWS_REGION: process.env.AWS_REGION && process.env.AWS_REGION.replace(/,$/g, ''),
-        AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID && process.env.AWS_ACCESS_KEY_ID.replace(/,$/g, ''),
-        AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY && process.env.AWS_SECRET_ACCESS_KEY.replace(/,$/g, ''),
-        AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME && process.env.AWS_S3_BUCKET_NAME.replace(/,$/g, ''),
+        NETLIFY_AWS_REGION: process.env.NETLIFY_AWS_REGION && process.env.NETLIFY_AWS_REGION.replace(/,$/g, ''),
+        NETLIFY_AWS_ACCESS_KEY_ID: process.env.NETLIFY_AWS_ACCESS_KEY_ID && process.env.NETLIFY_AWS_ACCESS_KEY_ID.replace(/,$/g, ''),
+        NETLIFY_AWS_SECRET_ACCESS_KEY: process.env.NETLIFY_AWS_SECRET_ACCESS_KEY && process.env.NETLIFY_AWS_SECRET_ACCESS_KEY.replace(/,$/g, ''),
+        NETLIFY_AWS_S3_BUCKET_NAME: process.env.NETLIFY_AWS_S3_BUCKET_NAME && process.env.NETLIFY_AWS_S3_BUCKET_NAME.replace(/,$/g, ''),
 
     },
 };

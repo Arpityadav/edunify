@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import SchoolCard from "@/app/schools/show/SchoolCard";
 
 export default function ShowSchools() {
-    console.log(process.env.MYSQL_USER)
     const [schools, setSchools] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
