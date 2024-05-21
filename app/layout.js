@@ -10,8 +10,27 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+      <html lang="en">
+      <body className={`${inter.className} bg-gray-100`}>
+      <nav className="py-4">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <a href="/" className="text-2xl font-bold font-mono text-gray-800 hover:text-gray-600">
+            Edunify
+          </a>
+          <div className="space-x-4">
+            <a href="/schools/show" className="text-gray-800 hover:text-blue-600">
+              Show School
+            </a>
+            <a href="/schools/create" className="text-gray-800 hover:text-blue-600">
+              Create School
+            </a>
+          </div>
+        </div>
+      </nav>
+      <main className="container mx-auto px-4 py-6">
+        {children}
+      </main>
+      </body>
+      </html>
   );
 }
